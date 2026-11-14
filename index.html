@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#000814" />
+<title>ASTRA — Astronaut Vision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============ START SCREEN ============ -->
+<div id="start" class="start-screen active">
+  <div class="start-bg"></div>
+  <div class="start-box">
+    <div class="start-logo">◉</div>
+    <h1>ASTRA</h1>
+    <p class="start-sub">ASTRONAUT VISION SYSTEM</p>
+    <p class="start-info">
+      Enter first-person astronaut vision. Your camera becomes the viewport.
+      Everything runs locally on your device.
+    </p>
+    <button id="enterBtn" class="start-btn">
+      <span class="scan-shine"></span>
+      ENTER ASTRONAUT VISION
+    </button>
+    <p class="start-note">Camera permission will be requested. Use HTTPS or localhost.</p>
+  </div>
+</div>
+
+<!-- ============ ASTRONAUT VISION ============ -->
+<div id="vision" class="vision-screen">
+
+  <!-- === The viewport (camera / demo canvas) === -->
+  <div class="viewport">
+    <video id="cam" autoplay playsinline muted></video>
+    <canvas id="demoCanvas" class="hidden"></canvas>
+    <div class="scan-sweep"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- === Curved visor frame === -->
+  <svg class="visor-frame" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+    <!-- Outer glow -->
+    <defs>
+      <linearGradient id="edge" x1="0" x2="1">
+        <stop offset="0%"  stop-color="#00e5ff" stop-opacity="0"/>
+        <stop offset="15%" stop-color="#00e5ff" stop-opacity="1"/>
+        <stop offset="85%" stop-color="#00e5ff" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <!-- Top curve -->
+    <path d="M 20 0 Q 500 55 980 0" stroke="url(#edge)" stroke-width="2" fill="none" filter="url(#glow)"/>
+    <!-- Bottom curve -->
+    <path d="M 20 600 Q 500 545 980 600" stroke="url(#edge)" stroke-width="2" fill="none" filter="url(#glow)"/>
+    <!-- Left curve -->
+    <path d="M 0 20 Q 55 300 0 580" stroke="url(#edge)" stroke-width="2" fill="none" filter="url(#glow)"/>
+    <!-- Right curve -->
+    <path d="M 1000 20 Q 945 300 1000 580" stroke="url(#edge)" stroke-width="2" fill="none" filter="url(#glow)"/>
+  </svg>
+
+  <!-- ============ HUD OVERLAY ============ -->
+  <div class="hud">
+
+    <!-- === TOP LEFT : Brand + Comms === -->
+    <div class="hud-top-left">
+      <div class="brand-block">
+        <div class="brand-icon">◉</div>
+        <div class="brand-text">
+          <div class="brand-name">AROGYAM</div>
+          <div class="brand-tag">Powered by <b>ASTRA</b></div>
+        </div>
+      </div>
+      <div class="comms-block">
+        <div class="block-title">COMMS</div>
+        <div class="comms-row"><span class="dot green"></span> MISSION CONTROL</div>
+        <div class="comms-row"><span class="dot white"></span> COR JANE</div>
+      </div>
+    </div>
+
+    <!-- === TOP CENTER : UTC clock + alert === -->
+    <div class="hud-top-center">
+      <div class="utc-clock" id="utcClock">07:00:01</div>
+      <div class="utc-label">UTC</div>
+      <div class="alert-row">
+        <div class="warn-icon">⚠</div>
+        <div class="warn-text" id="warnText">Oxygen Low</div>
+      </div>
+    </div>
+
+    <!-- === TOP RIGHT : Env + BP + Pressure === -->
+    <div class="hud-top-right">
+      <div class="cor-badge">COR JOHN</div>
+      <div class="env-row">
+        <div class="env-item"><span class="lbl">O₂</span><span class="val red">25%</span></div>
+        <div class="env-item"><span class="lbl">CO₂</span><span class="val">1%</span></div>
+        <div class="env-item"><span class="lbl">H₂O</span><span class="val">50%</span></div>
+      </div>
+      <div class="env-row big">
+        <div class="env-item"><span class="lbl">BPM</span><span class="val">120 / 80</span></div>
+        <div class="env-item"><span class="lbl">PRESSURE</span><span class="val red">4.11 psi</span></div>
+      </div>
+    </div>
+
+    <!-- === BOTTOM : Vitals + Mission info === -->
+    <div class="hud-bottom">
+      <div class="vitals-card">
+        <div class="v-item">
+          <div class="v-icon">❤</div>
+          <div class="v-body">
+            <div class="v-val"><b>72</b><span>BPM</span></div>
+            <canvas id="ecg" width="90" height="22"></canvas>
+          </div>
+        </div>
+        <div class="v-item">
+          <div class="v-icon blue">◈</div>
+          <div class="v-body">
+            <div class="v-val"><b>98</b><span>%</span></div>
+            <div class="v-sub">SpO₂</div>
+          </div>
+        </div>
+        <div class="v-item">
+          <div class="v-icon">🌡</div>
+          <div class="v-body">
+            <div class="v-val"><b>36.6</b><span>°C</span></div>
+            <div class="v-sub">Temp</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="radar">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="#00e5ff" stroke-opacity=".3"/><circle cx="50" cy="50" r="34" fill="none" stroke="#00e5ff" stroke-opacity=".5"/><circle cx="50" cy="50" r="20" fill="none" stroke="#00e5ff" stroke-opacity=".7"/><path d="M 50 50 L 50 2 A 48 48 0 0 1 88 26 Z" fill="rgba(0,229,255,.15)" class="radar-sweep"/><line x1="50" y1="50" x2="50" y2="0" stroke="#00e5ff" class="radar-needle"/></svg>
+      </div>
+
+      <div class="mission-card">
+        <div class="m-item">
+          <div class="m-icon">📅</div>
+          <div><div class="m-lbl">Mission Day</div><div class="m-val">184</div></div>
+        </div>
+        <div class="m-item">
+          <div class="m-icon">🌍</div>
+          <div><div class="m-lbl">Earth Distance</div><div class="m-val">421 km</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === CONTROLS (bottom edge) === -->
+    <div class="controls">
+      <button id="switchBtn" title="Switch camera">⇄</button>
+      <button id="toggleBtn" title="Camera on/off">◐</button>
+      <button id="fsBtn" title="Fullscreen">⛶</button>
+      <button id="exitBtn" title="Exit">↩</button>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
