@@ -1,0 +1,217 @@
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#e8feff;
+  font-family:'Rajdhani',system-ui,sans-serif;-webkit-font-smoothing:antialiased;user-select:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.hidden{display:none!important}
+
+/* ================= START SCREEN ================= */
+.start-screen{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:100;
+  background:radial-gradient(circle at 50% 30%,#0a1930,#000814 70%)}
+.start-screen.active{display:flex}
+.start-bg{position:absolute;inset:0;background-image:
+  radial-gradient(1px 1px at 20% 30%,#fff,transparent),
+  radial-gradient(1px 1px at 70% 20%,#9fe,transparent),
+  radial-gradient(1.5px 1.5px at 40% 70%,#fff,transparent),
+  radial-gradient(1px 1px at 85% 60%,#9fe,transparent),
+  radial-gradient(1px 1px at 10% 85%,#fff,transparent);
+  opacity:.6;animation:twinkle 6s infinite alternate}
+@keyframes twinkle{from{opacity:.3}to{opacity:.9}}
+.start-box{position:relative;z-index:2;text-align:center;max-width:560px;padding:30px}
+.start-logo{font-size:60px;color:#00e5ff;text-shadow:0 0 40px #00e5ff;margin-bottom:10px;animation:pulse 3s infinite}
+@keyframes pulse{50%{text-shadow:0 0 60px #00e5ff,0 0 20px #00e5ff}}
+.start-box h1{font-family:'Orbitron';font-size:clamp(48px,10vw,80px);font-weight:900;
+  letter-spacing:14px;color:#fff;text-shadow:0 0 30px #00e5ff;margin-bottom:6px}
+.start-sub{font-family:'Share Tech Mono';font-size:12px;letter-spacing:6px;color:#5fcfe8;margin-bottom:26px}
+.start-info{font-size:15px;line-height:1.6;color:#9fc7dd;margin-bottom:32px}
+.start-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;
+  padding:20px 40px;font-family:'Orbitron';font-weight:700;font-size:14px;letter-spacing:4px;
+  color:#fff;background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(0,229,255,.05));
+  border:1.5px solid #00e5ff;border-radius:6px;overflow:hidden;transition:.3s;
+  box-shadow:0 0 30px rgba(0,229,255,.5)}
+.start-btn:hover{box-shadow:0 0 60px rgba(0,229,255,1);transform:translateY(-2px)}
+.scan-shine{position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
+  transform:translateX(-100%);animation:shine 2.5s infinite}
+@keyframes shine{to{transform:translateX(100%)}}
+.start-note{margin-top:24px;font-size:12px;color:#5f8ea8}
+
+/* ================= VISION SCREEN ================= */
+.vision-screen{position:fixed;inset:0;display:none;background:#000;overflow:hidden}
+.vision-screen.active{display:block}
+
+/* Viewport (camera in center, "earth-view" position) */
+.viewport{position:absolute;inset:0;z-index:1;overflow:hidden;
+  clip-path:ellipse(48% 42% at 50% 50%);
+  background:#000}
+#cam,#demoCanvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#cam{filter:brightness(1.05) contrast(1.1) saturate(1.15)}
+
+/* subtle scan-line sweep across viewport */
+.scan-sweep{position:absolute;left:0;right:0;height:3px;top:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(0,229,255,.6),transparent);
+  animation:scanY 6s linear infinite;box-shadow:0 0 30px #00e5ff}
+@keyframes scanY{0%{top:0}100%{top:100%}}
+
+/* faint perspective grid */
+.grid-overlay{position:absolute;inset:0;pointer-events:none;opacity:.15;
+  background-image:linear-gradient(rgba(0,229,255,.15) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,229,255,.15) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center,#000 40%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 40%,transparent 75%)}
+
+/* curved visor frame drawn in SVG */
+.visor-frame{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+
+/* ================= HUD ================= */
+.hud{position:absolute;inset:0;z-index:3;pointer-events:none}
+.hud>*{pointer-events:auto}
+
+/* shared HUD fonts / box */
+.hud{font-family:'Rajdhani',sans-serif;font-size:13px}
+.block-title{font-family:'Orbitron';font-size:10px;letter-spacing:2px;color:#00e5ff;
+  margin-bottom:6px;border-bottom:1px solid rgba(0,229,255,.3);padding-bottom:4px}
+
+/* ---- TOP LEFT ---- */
+.hud-top-left{position:absolute;top:28px;left:36px;width:220px}
+.brand-block{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.brand-icon{width:38px;height:38px;border-radius:50%;
+  border:2px solid #00e5ff;display:flex;align-items:center;justify-content:center;
+  color:#00e5ff;font-size:20px;box-shadow:0 0 18px #00e5ff, inset 0 0 12px rgba(0,229,255,.5);
+  animation:spin 8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.brand-name{font-family:'Orbitron';font-weight:700;font-size:18px;letter-spacing:2px;color:#fff;line-height:1}
+.brand-tag{font-size:10px;color:#8fb;letter-spacing:1px;margin-top:2px}
+.brand-tag b{color:#00e5ff}
+
+.comms-block{background:rgba(0,20,40,.5);border:1px solid rgba(0,229,255,.35);
+  border-radius:6px;padding:10px 14px;backdrop-filter:blur(6px);
+  box-shadow:inset 0 0 20px rgba(0,229,255,.1),0 0 20px rgba(0,229,255,.15)}
+.comms-row{display:flex;align-items:center;gap:10px;font-size:12px;color:#cfe;
+  padding:3px 0;font-family:'Share Tech Mono';letter-spacing:1px}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot.green{background:#2cff7a;box-shadow:0 0 8px #2cff7a}
+.dot.white{background:#ccc;box-shadow:0 0 6px #888}
+
+/* ---- TOP CENTER ---- */
+.hud-top-center{position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;width:300px}
+.utc-clock{font-family:'Orbitron';font-size:40px;font-weight:700;color:#fff;
+  letter-spacing:3px;line-height:1;text-shadow:0 0 20px rgba(0,229,255,.7)}
+.utc-label{font-family:'Share Tech Mono';font-size:11px;letter-spacing:6px;color:#00e5ff;
+  margin-top:2px;margin-bottom:8px}
+.alert-row{display:flex;align-items:center;gap:8px;color:#ff3b3b;font-family:'Orbitron';
+  font-size:14px;letter-spacing:3px;animation:pulseWarn 1.4s infinite}
+@keyframes pulseWarn{50%{opacity:.55}}
+.warn-icon{font-size:20px;color:#ff3b3b;filter:drop-shadow(0 0 10px #ff3b3b)}
+
+/* ---- TOP RIGHT ---- */
+.hud-top-right{position:absolute;top:24px;right:36px;text-align:right}
+.cor-badge{display:inline-block;padding:5px 18px;border:1px solid rgba(0,229,255,.5);
+  border-radius:20px;font-family:'Orbitron';font-size:11px;letter-spacing:2px;color:#00e5ff;
+  background:rgba(0,20,40,.6);margin-bottom:10px;box-shadow:0 0 15px rgba(0,229,255,.3)}
+.env-row{display:flex;gap:20px;justify-content:flex-end;margin-bottom:6px;
+  font-family:'Share Tech Mono'}
+.env-row .env-item{display:flex;flex-direction:column;align-items:flex-end;min-width:48px}
+.env-row .lbl{font-size:10px;color:#5fcfe8;letter-spacing:1px}
+.env-row .val{font-size:15px;color:#fff;line-height:1.1}
+.env-row .val.red{color:#ff5b5b;text-shadow:0 0 8px rgba(255,91,91,.6)}
+.env-row.big .val{font-size:22px;font-weight:700;font-family:'Orbitron'}
+
+/* ---- BOTTOM ---- */
+.hud-bottom{position:absolute;bottom:26px;left:0;right:0;display:flex;justify-content:space-between;
+  align-items:flex-end;padding:0 36px;gap:20px}
+
+/* Vitals card (bottom left) */
+.vitals-card{display:flex;gap:26px;background:rgba(0,20,40,.55);
+  border:1px solid rgba(0,229,255,.4);border-radius:10px;
+  padding:12px 22px;backdrop-filter:blur(6px);
+  box-shadow:inset 0 0 20px rgba(0,229,255,.12),0 0 25px rgba(0,229,255,.2)}
+.v-item{display:flex;align-items:center;gap:10px}
+.v-icon{font-size:24px;color:#ff4b6b;filter:drop-shadow(0 0 6px #ff4b6b)}
+.v-icon.blue{color:#00e5ff;filter:drop-shadow(0 0 6px #00e5ff)}
+.v-item:nth-child(3) .v-icon{color:#ffd166;filter:drop-shadow(0 0 6px #ffd166)}
+.v-body{display:flex;flex-direction:column}
+.v-val{font-family:'Orbitron';font-size:16px;color:#fff;line-height:1}
+.v-val b{font-size:22px}
+.v-val span{font-size:11px;color:#5fcfe8;margin-left:3px}
+.v-sub{font-size:10px;color:#5fcfe8;letter-spacing:1px;margin-top:2px}
+#ecg{display:block;margin-top:2px}
+
+/* Radar (bottom center) */
+.radar{width:110px;height:110px;position:relative;margin-bottom:-8px}
+.radar svg{width:100%;height:100%;filter:drop-shadow(0 0 12px #00e5ff)}
+.radar-sweep{transform-origin:50% 50%;animation:radarSpin 3s linear infinite}
+@keyframes radarSpin{to{transform:rotate(360deg)}}
+.radar-needle{transform-origin:50% 50%;animation:radarSpin 3s linear infinite}
+
+/* Mission card (bottom right) */
+.mission-card{display:flex;gap:28px;background:rgba(0,20,40,.55);
+  border:1px solid rgba(0,229,255,.4);border-radius:10px;
+  padding:12px 22px;backdrop-filter:blur(6px);
+  box-shadow:inset 0 0 20px rgba(0,229,255,.12),0 0 25px rgba(0,229,255,.2)}
+.m-item{display:flex;align-items:center;gap:10px}
+.m-icon{font-size:22px;color:#00e5ff;filter:drop-shadow(0 0 6px #00e5ff)}
+.m-lbl{font-size:11px;color:#8fb;letter-spacing:1px}
+.m-val{font-family:'Orbitron';font-size:18px;color:#fff;line-height:1}
+
+/* ---- CONTROLS ---- */
+.controls{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;padding:4px 10px;background:rgba(0,20,40,.65);
+  border:1px solid rgba(0,229,255,.35);border-radius:30px;backdrop-filter:blur(4px);z-index:4}
+.controls button{width:34px;height:34px;border-radius:50%;color:#5fcfe8;font-size:15px;
+  display:flex;align-items:center;justify-content:center;transition:.2s}
+.controls button:hover{color:#00e5ff;background:rgba(0,229,255,.15);text-shadow:0 0 10px #00e5ff}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:rgba(0,20,40,.95);border:1px solid #00e5ff;border-radius:6px;
+  padding:10px 22px;color:#e8feff;font-family:'Orbitron';font-size:11px;letter-spacing:2px;
+  z-index:999;box-shadow:0 0 30px rgba(0,229,255,.6);animation:toastIn .3s ease}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:900px){
+  .hud-top-left{top:16px;left:16px;width:170px}
+  .brand-name{font-size:15px}
+  .hud-top-right{top:14px;right:16px}
+  .utc-clock{font-size:28px}
+  .env-row .val{font-size:13px}
+  .env-row.big .val{font-size:17px}
+  .hud-bottom{padding:0 16px;gap:10px}
+  .vitals-card,.mission-card{padding:8px 12px;gap:14px}
+  .v-val b{font-size:17px}
+  .radar{width:80px;height:80px}
+  .m-val{font-size:15px}
+}
+@media (max-width:600px){
+  .viewport{clip-path:ellipse(52% 44% at 50% 50%)}
+  .hud-top-left{width:auto}
+  .brand-block{margin-bottom:8px}
+  .brand-icon{width:28px;height:28px;font-size:14px}
+  .brand-name{font-size:13px;letter-spacing:1px}
+  .brand-tag{font-size:9px}
+  .comms-block{padding:6px 10px}
+  .comms-row{font-size:10px}
+  .utc-clock{font-size:22px;letter-spacing:2px}
+  .utc-label{font-size:9px;letter-spacing:4px;margin-bottom:4px}
+  .alert-row{font-size:10px;letter-spacing:2px}
+  .warn-icon{font-size:14px}
+  .cor-badge{font-size:9px;padding:3px 12px}
+  .env-row{gap:10px}
+  .env-row .val{font-size:11px}
+  .env-row .lbl{font-size:8px}
+  .env-row.big .val{font-size:13px}
+  .vitals-card{gap:10px;padding:6px 10px;border-radius:8px}
+  .v-icon{font-size:16px}
+  .v-val b{font-size:14px}
+  .v-val span{font-size:9px}
+  .v-sub{font-size:9px}
+  #ecg{width:60px;height:16px}
+  .mission-card{gap:12px;padding:6px 10px;border-radius:8px}
+  .m-icon{font-size:16px}
+  .m-lbl{font-size:9px}
+  .m-val{font-size:13px}
+  .radar{width:60px;height:60px}
+  .controls{font-size:12px}
+  .controls button{width:28px;height:28px;font-size:12px}
+}
